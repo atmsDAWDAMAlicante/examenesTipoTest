@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Tipo Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .pregunta {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .pregunta h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .respuesta {
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .respuesta label {
+            margin-left: 8px;
+            cursor: pointer;
+        }
+        .correcta {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        .incorrecta {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+        .acierto-texto {
+            font-weight: bold;
+        }
+        #btnConfirmar, #btnTestNuevo {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0;
+            display: block;
+        }
+        #btnConfirmar:hover {
+            background-color: #0056b3;
+        }
+        #resultado {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<script src="test.js"></script>
+    <h1>Examen Tipo Test</h1>
+
+    <div id="cuestionario"></div>
+    
+    <button id="btnConfirmar">Confirmar respuestas</button>
+    <div id="resultado"></div>
+
+<script>
+
+        // Aquí podrías poner el Array de objetos con las preguntas y respuestas
+        // pero mejor en un archivo aparte
+
+
+        // Función para generar el HTML del cuestionario
+        function generarCuestionario() {
+            const contenedor = document.getElementById('cuestionario');
+            let html = '<form id="formCuestionario">';
+            
+            preguntas.forEach((pregunta, indexPregunta) => {
+                html += `
+                    <div class="pregunta" id="pregunta-${indexPregunta}">
+                        <h3>${indexPregunta + 1}. ${pregunta.pregunta}</h3>
+                `;
+                
+                pregunta.respuestas.forEach((respuesta, indexRespuesta) => {
+                    html += `
+                        <div class="respuesta" id="resp-${indexPregunta}-${indexRespuesta}">
+                            <input type="radio" 
+                                   name="pregunta_${indexPregunta}" 
+                                   value="${indexRespuesta}" 
+                                   id="op-${indexPregunta}-${indexRespuesta}">
+                            <label for="op-${indexPregunta}-${indexRespuesta}">${respuesta}</label>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            });
+            
+            html += '</form>';
+            contenedor.innerHTML = html;
+        }
+
+        // Función para eliminar clases de color de todas las respuestas
+        function limpiarColores() {
+            const respuestas = document.querySelectorAll('.respuesta');
+            respuestas.forEach(respuesta => {
+                respuesta.classList.remove('correcta', 'incorrecta');
+            });
+        }
+
+        // Función para verificar respuestas
+        function verificarRespuestas() {
+            limpiarColores();
+            
+            let aciertos = 0;
+            const form = document.getElementById('formCuestionario');
+            
+            preguntas.forEach((pregunta, indexPregunta) => {
+                // Obtener la respuesta seleccionada para esta pregunta
+                const radios = form.querySelectorAll(`input[name="pregunta_${indexPregunta}"]`);
+                let respuestaSeleccionada = null;
+                
+                radios.forEach(radio => {
+                    if (radio.checked) {
+                        respuestaSeleccionada = radio.value;
+                    }
+                });
+                
+                // Determinar colores y contar aciertos
+                if (respuestaSeleccionada !== null) {
+                    // Marcar la respuesta correcta
+                    const respuestaCorrectaDiv = document.getElementById(`resp-${indexPregunta}-${pregunta.idCorrecta}`);
+                    respuestaCorrectaDiv.classList.add('correcta');
+                    
+                    // Si el usuario seleccionó una respuesta incorrecta, marcarla en rojo
+                    if (parseInt(respuestaSeleccionada) !== pregunta.idCorrecta) {
+                        const respuestaIncorrectaDiv = document.getElementById(`resp-${indexPregunta}-${respuestaSeleccionada}`);
+                        respuestaIncorrectaDiv.classList.add('incorrecta');
+                    } else {
+                        // Si acertó, incrementar contador
+                        aciertos++;
+                    }
+                } else {
+                    // Si no respondió, solo mostrar la correcta en verde
+                    const respuestaCorrectaDiv = document.getElementById(`resp-${indexPregunta}-${pregunta.idCorrecta}`);
+                    respuestaCorrectaDiv.classList.add('correcta');
+                }
+            });
+            
+            // Mostrar resultado
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = `Has acertado ${aciertos} de ${preguntas.length} preguntas.`;
+            
+            // Cambiar color del resultado según rendimiento
+            if (aciertos === preguntas.length) {
+                resultadoDiv.style.color = '#28a745';
+            } else if (aciertos >= preguntas.length / 2) {
+                resultadoDiv.style.color = '#ffc107';
+            } else {
+                resultadoDiv.style.color = '#dc3545';
+            }
+        }
+
+        // Generar el cuestionario al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            generarCuestionario();
+            
+            // Agregar evento al botón confirmar
+            document.getElementById('btnConfirmar').addEventListener('click', verificarRespuestas);
+        });
+    </script>
+</body>
+</html>
