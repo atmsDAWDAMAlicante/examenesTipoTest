@@ -13,6 +13,8 @@
 <script src="./test_de_ejemplo_3_preguntas.js"></script><!-- Cuidado con la ruta -->
     <h1>Examen Tipo Test</h1>
 
+    <p><span style="font-size:0.8em;color:grey;">(Recarga para generar otro test aleatorio)</p>
+
     <div id="cuestionario"></div>
     
     <button id="btnConfirmar">Confirmar respuestas</button>
@@ -22,7 +24,33 @@
 <script>
 
         // Para que funcione en Android hay que copiar y pegar aquí el Array de objetos con las preguntas y respuestas
+
+
+
 </script>
+
+
+<script>
+    // Función para crear un array con las preguntas reordenadas aleatoriamente
+
+    // 1. Crear array del 1 al 20
+    let numeros = Array.from({ length: preguntas_en_crudo.length }, (_, i) => i + 1);
+
+    // 2. Mezclar (Fisher-Yates shuffle)
+    for (let i = numeros.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [numeros[i], numeros[j]] = [numeros[j], numeros[i]];
+    }
+
+    // Se rellena el array preguntas con el orden aleatorio
+    
+    const preguntas = numeros.map((una_pregunta) => preguntas_en_crudo[una_pregunta-1]);
+    console.log(preguntas)
+
+
+</script>
+
+
 
 <script>  // Funciones
 

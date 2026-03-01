@@ -1,6 +1,6 @@
 // Array de objetos con 50 preguntas y respuestas para rellenar
 
-const preguntas = [
+const preguntas_en_crudo = [
             { // PREGUNTA 1
                 pregunta: "escribe la pregunta",
                 idCorrecta: 0, // Índice de la respuesta correcta

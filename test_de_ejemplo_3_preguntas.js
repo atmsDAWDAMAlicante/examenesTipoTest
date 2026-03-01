@@ -1,6 +1,6 @@
 // Array de objetos con las preguntas y respuestas de ejemplo
 
-const preguntas = [
+const preguntas_en_crudo = [
             {
                 pregunta: "¿Cuál es la capital de Francia?",
                 idCorrecta: 0, // Índice de la respuesta correcta
