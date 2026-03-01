@@ -1,0 +1,62 @@
+body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .pregunta {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .pregunta h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .respuesta {
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .respuesta label {
+            margin-left: 8px;
+            cursor: pointer;
+        }
+        .correcta {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        .incorrecta {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+        .acierto-texto {
+            font-weight: bold;
+        }
+        #btnConfirmar, #btnTestNuevo {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0;
+            display: block;
+        }
+        #btnConfirmar:hover {
+            background-color: #0056b3;
+        }
+        #resultado {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            text-align: center;
+        }
